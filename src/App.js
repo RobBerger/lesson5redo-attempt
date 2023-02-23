@@ -9,9 +9,15 @@ function App() {
   const [selectedContact, setSelectedContact] = useState(null)
 
   useEffect(() => {
-    setContacts(JSON.parse(localStorage.getItem("contacts") || "[]"))
-    setSelectedContact(localStorage.getItem("selectedContact"))
-  }, [])
+    if (contacts === null) {
+      setContacts(JSON.parse(localStorage.getItem("contacts") || "[]"))
+      setSelectedContact(localStorage.getItem("selectedContact"))
+    } else {
+      localStorage.setItem("contacts", JSON.stringify(contacts))
+      localStorage.setItem("selectedContact", selectedContact)
+    }
+    if (selectedContact === null) localStorage.removeItem("selectedContact")
+  }, [contacts, selectedContact])
 
   function handleNewContact(contact) {
     setContacts(contacts.concat(contact))
